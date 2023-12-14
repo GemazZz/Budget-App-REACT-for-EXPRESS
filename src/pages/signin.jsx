@@ -13,30 +13,50 @@ import {
   StyledLinkSpan,
 } from "../styles/signStyle";
 import { Link, useNavigate } from "react-router-dom";
+import { StyledLabel } from "../styles/filterStyle";
 
+const URL = "http://localhost:3000/api/v1/signin";
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [err, setErr] = useState(false);
+  const userData = { email, password };
   const navigate = useNavigate();
-  const checkUser = () => {
+
+  const checkUser = async () => {
     if (!email || !password) {
       alert("Please fill out the form completely");
       return;
     }
-    const parseExistData = JSON.parse(localStorage.getItem("users"));
-    const findEmail = parseExistData.filter((user) => user.email === email);
-    const findUser = parseExistData.filter((user) => user.email === email && user.password === password);
+    const tokenSave = async () => {
+      try {
+        const res = await fetch(URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        });
 
-    if (findEmail.length !== 0 && findUser.length === 0) {
-      alert("Password is Incorrect");
-      return;
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const json = await res.json();
+        return json;
+      } catch (err) {
+        navigate("/signin");
+        console.log(err);
+        return "err";
+      }
+    };
+    const accessToken = await tokenSave();
+    console.log(accessToken);
+    if (accessToken !== "err") {
+      sessionStorage.setItem("accessToken", JSON.stringify(accessToken.token));
+      navigate("/signup");
     }
-    if (findUser.length === 0) {
-      alert("User not found");
-      return;
-    }
-    localStorage.setItem("id", JSON.stringify(findUser[0].userId));
-    navigate("/");
+    setErr(true);
   };
   return (
     <StyledDiv>
@@ -66,9 +86,7 @@ const SignIn = () => {
           }}
         />
       </div>
-      <Link to={"/forgetpassword"} style={{ textDecorationLine: "none" }}>
-        <StyledForget>Forget Password?</StyledForget>
-      </Link>
+      {err && <StyledLabel style={{ color: "red" }}>Wrong credentials</StyledLabel>}
       <StyledSubmitBtn
         className="submit"
         onClick={() => {

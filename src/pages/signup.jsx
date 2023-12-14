@@ -13,6 +13,8 @@ import {
 } from "../styles/signStyle";
 import { Link, useNavigate } from "react-router-dom";
 
+const URL = "http://localhost:3000/api/v1/signup";
+
 const SignUp = () => {
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -21,21 +23,26 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const userData = {
-    userId: new Date().getTime(),
     name,
     username,
     email,
     password,
   };
   const uploadUser = () => {
-    const usersData = JSON.parse(localStorage.getItem("users"));
-
-    if (!email || !password) {
+    if (!name || !username || !email || !password) {
       alert("Please fill the form completely");
       return;
     }
     if (!email.includes("@")) {
       alert("Email is NOT valid. (does NOT contain '@')");
+      return;
+    }
+    if (name < 6) {
+      alert("Email is NOT valid. (Too short)");
+      return;
+    }
+    if (username < 6) {
+      alert("Email is NOT valid. (Too short)");
       return;
     }
     if (email.length < 6) {
@@ -54,10 +61,23 @@ const SignUp = () => {
       alert("Password is NOT valid. (Use no more than 20 character)");
       return;
     }
-    const existData = localStorage.getItem("users");
-    const parseExistData = JSON.parse(existData);
-    const fullData = [userData, ...parseExistData];
-    localStorage.setItem("users", JSON.stringify(fullData));
+
+    fetch(URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => {
+        console.log(json);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
     navigate("/signin");
   };
   return (

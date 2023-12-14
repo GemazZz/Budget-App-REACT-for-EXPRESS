@@ -22,26 +22,31 @@ const Transaction = () => {
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("");
   const navigate = useNavigate();
-
-  const currentUserId = JSON.parse(localStorage.getItem("id"));
-  const expenseData = {
-    userId: currentUserId,
-    id: new Date().getTime(),
-    type,
-    category,
-    date,
-    amount: parseInt(amount),
-  };
-  const uploadExpenses = () => {
+  const URL = "http://localhost:3000/api/v1/newexpense";
+  const expenseData = { date, type, category, amount: parseInt(amount) };
+  const uploadExpenses = async () => {
     if (!category || !date || !amount) {
       alert("Please fill out the form completely");
       return;
     }
-    const existData = localStorage.getItem("expenses");
-    const parseExistData = JSON.parse(existData);
-    const fullData = [expenseData, ...parseExistData];
-    localStorage.setItem("expenses", JSON.stringify(fullData));
-    navigate("/");
+    try {
+      const res = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: JSON.parse(sessionStorage.getItem("accessToken")),
+        },
+        body: JSON.stringify(expenseData),
+      });
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+      navigate("/signin");
+    } catch (err) {
+      navigate("/addtransaction");
+      console.log(err);
+      return "err";
+    }
   };
   const typeCheckerIncome = () => {
     setType("Income");

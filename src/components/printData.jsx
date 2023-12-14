@@ -11,7 +11,7 @@ import {
 
 const PrintData = (props) => {
   const navigate = useNavigate();
-  const currentUserId = JSON.parse(localStorage.getItem("id"));
+  const currentUserId = JSON.parse(sessionStorage.getItem("id"));
   const printParseData = props.currentExpenses;
   const editExpense = (id) => {
     navigate(`/edittransaction/` + id);
