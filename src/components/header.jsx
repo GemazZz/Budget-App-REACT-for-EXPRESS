@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const navigate = useNavigate();
-  const currentUser = JSON.parse(localStorage.getItem("id"));
+  const currentUser = JSON.parse(sessionStorage.getItem("accessToken"));
   const parseExistData = JSON.parse(localStorage.getItem("users"));
   const userData = parseExistData.filter((user) => user.userId === currentUser);
   const logOut = () => {

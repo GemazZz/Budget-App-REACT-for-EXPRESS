@@ -11,7 +11,7 @@ import {
 
 const PrintData = (props) => {
   const navigate = useNavigate();
-  const currentUserId = JSON.parse(sessionStorage.getItem("id"));
+  const currentUserId = JSON.parse(sessionStorage.getItem("accessToken"));
   const printParseData = props.currentExpenses;
   const editExpense = (id) => {
     navigate(`/edittransaction/` + id);
@@ -22,15 +22,15 @@ const PrintData = (props) => {
       {!currentUserId && <StyledCommandDiv>Log in to add items</StyledCommandDiv>}
       {currentUserId && printParseData.length === 0 && <StyledCommandDiv>No previous transactions</StyledCommandDiv>}
       {printParseData.map((exp) => (
-        <StyledPrintDataDiv key={exp.id} value={exp.type}>
+        <StyledPrintDataDiv key={exp._id} value={exp.type}>
           <StyledDataP>Created at: {exp.date}</StyledDataP>
           <StyledDataP>Category: {exp.category}</StyledDataP>
           <StyledDataP>Amount: {exp.amount}₾</StyledDataP>
           <StyledColoredP value={exp.type}>{exp.type}</StyledColoredP>
-          <StyledPrintDltBtn onClick={() => props.dltExpense(exp.id)}>
+          <StyledPrintDltBtn onClick={() => props.dltExpense(exp._id)}>
             <i className="fa-regular fa-circle-xmark fa-lg" />
           </StyledPrintDltBtn>
-          <StyledPrintEditBtn onClick={() => editExpense(exp.id)}>
+          <StyledPrintEditBtn onClick={() => editExpense(exp._id)}>
             <i className="fa-regular fa-pen-to-square fa-lg" />
           </StyledPrintEditBtn>
         </StyledPrintDataDiv>

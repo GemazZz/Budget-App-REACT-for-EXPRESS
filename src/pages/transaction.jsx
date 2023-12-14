@@ -41,7 +41,7 @@ const Transaction = () => {
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
-      navigate("/signin");
+      navigate("/");
     } catch (err) {
       navigate("/addtransaction");
       console.log(err);

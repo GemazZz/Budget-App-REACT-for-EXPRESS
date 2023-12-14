@@ -9,7 +9,6 @@ import {
   StyledDateInput,
   StyledNumberInput,
   StyledNew,
-  StyledForget,
   StyledLinkSpan,
 } from "../styles/signStyle";
 import { Link, useNavigate } from "react-router-dom";
@@ -54,7 +53,7 @@ const SignIn = () => {
     console.log(accessToken);
     if (accessToken !== "err") {
       sessionStorage.setItem("accessToken", JSON.stringify(accessToken.token));
-      navigate("/signup");
+      navigate("/");
     }
     setErr(true);
   };
