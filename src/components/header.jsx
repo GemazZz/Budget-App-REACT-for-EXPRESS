@@ -3,6 +3,7 @@ import { StyledHeaderDiv, StyledAddNewTransaction, StyledBudgetApp, StyledSignIn
 import { useNavigate } from "react-router-dom";
 
 const URL = "http://localhost:3000/api/v1/user";
+const URLDEL = "http://localhost:3000/api/v1/deactivation";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -10,7 +11,6 @@ const Header = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log(userData);
   const fetchData = async () => {
     try {
       const res = await fetch(URL, {
@@ -24,10 +24,9 @@ const Header = () => {
         throw new Error("Network response was not ok.");
       }
       const data = await res.json();
-      console.log(data);
       setUserData(data);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.log("Error fetching data:", error);
     }
   };
   const currentUser = JSON.parse(sessionStorage.getItem("accessToken"));
@@ -56,6 +55,27 @@ const Header = () => {
       navigate("/signin");
     }
   };
+  const deactivationFunc = async () => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(URLDEL, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: JSON.parse(sessionStorage.getItem("accessToken")),
+          },
+        });
+        if (!res.ok) {
+          throw new Error("Network response was not ok.");
+        }
+        await res.json();
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    await fetchData();
+    navigate("/signin");
+  };
   return (
     <StyledHeaderDiv>
       {currentUser && userData && <StyledEmailP>{userData.foundUser.username}</StyledEmailP>}
@@ -68,6 +88,28 @@ const Header = () => {
       </StyledBudgetApp>
       <StyledAddNewTransaction onClick={() => logInCheck()}>Add New Transaction</StyledAddNewTransaction>
       <StyledSignIn>
+        <StyledI
+          className="fa-solid fa-arrows-rotate fa-2xl"
+          style={{ color: "#b4d300" }}
+          onClick={() => {
+            if (!sessionStorage.getItem("accessToken")) {
+              alert("You are not signed in!");
+              return;
+            }
+            navigate("/changepassword");
+          }}
+        />
+        <StyledI
+          className="fa-solid fa-user-minus fa-2xl"
+          style={{ color: "#360000" }}
+          onClick={async () => {
+            if (!sessionStorage.getItem("accessToken")) {
+              alert("You are not signed in!");
+              return;
+            }
+            await deactivationFunc();
+          }}
+        />
         <StyledI
           className="fa-solid fa-user fa-2xl"
           style={{ color: "#764920" }}

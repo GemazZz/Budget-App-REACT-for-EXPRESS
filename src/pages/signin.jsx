@@ -50,7 +50,6 @@ const SignIn = () => {
       }
     };
     const accessToken = await tokenSave();
-    console.log(accessToken.token);
     if (accessToken !== "err") {
       sessionStorage.setItem("accessToken", JSON.stringify(accessToken.token));
       navigate("/");

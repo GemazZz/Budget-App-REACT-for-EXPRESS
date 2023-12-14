@@ -13,7 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const URL = "http://localhost:3000/api/v1/newpassword";
 
-const ForgetPass = () => {
+const ChangePassword = () => {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const userData = { password, newPassword };
@@ -32,6 +32,7 @@ const ForgetPass = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: JSON.parse(sessionStorage.getItem("accessToken")),
       },
       body: JSON.stringify(userData),
     })
@@ -45,6 +46,7 @@ const ForgetPass = () => {
         console.error("Error fetching data:", error);
       });
     alert("Password changed successfully");
+    sessionStorage.removeItem("accessToken");
     navigate("/signin");
   };
   return (
@@ -56,10 +58,10 @@ const ForgetPass = () => {
       </Link>
       <StyledTransactionH1>Change Password </StyledTransactionH1>
       <div style={{ position: "relative", left: "-5px" }}>
-        <StyledDateLabel htmlFor="Email">Old Password: </StyledDateLabel>
+        <StyledDateLabel htmlFor="oldPassword">Old Password: </StyledDateLabel>
         <StyledDateInput
-          type="email"
-          id="Email"
+          type="password"
+          id="oldPassword"
           onChange={(e) => {
             setPassword(e.target.value);
           }}
@@ -87,4 +89,4 @@ const ForgetPass = () => {
   );
 };
 
-export default ForgetPass;
+export default ChangePassword;

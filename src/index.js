@@ -6,11 +6,11 @@ import Home from "./pages/home";
 import SignIn from "./pages/signin";
 import SignUp from "./pages/signup";
 import Transaction from "./pages/transaction";
-import ForgetPass from "./pages/Forget password";
 import EditTransaction from "./pages/editTransaction";
 import "./App.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ChangePassword from "./pages/changePassword";
 
 const router = createBrowserRouter([
   {
@@ -34,12 +34,12 @@ const router = createBrowserRouter([
     element: <SignUp />,
   },
   {
-    path: "/forgetpassword",
-    element: <ForgetPass />,
+    path: "/changepassword",
+    element: <ChangePassword />,
   },
   {
     path: "*",
-    element: <div>Not found</div>,
+    element: <h1>Not found</h1>,
   },
 ]);
 
