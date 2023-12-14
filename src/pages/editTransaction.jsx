@@ -45,7 +45,9 @@ const Transaction = () => {
   };
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   useEffect(() => {
     setType(parseEditData.type);
     setCategory(parseEditData.category);
