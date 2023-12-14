@@ -13,7 +13,7 @@ import {
 } from "../styles/signStyle";
 import { Link, useNavigate } from "react-router-dom";
 
-const URL = "http://localhost:3000/api/v1/signup";
+const URL = "https://clownfish-app-7yexe.ondigitalocean.app/api/v1/signup";
 
 const SignUp = () => {
   const [name, setName] = useState("");

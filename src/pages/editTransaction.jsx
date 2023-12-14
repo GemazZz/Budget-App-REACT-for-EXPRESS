@@ -18,7 +18,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 const Transaction = () => {
   const params = useParams().id;
-  const URL = `http://localhost:3000/api/v1/${params}`;
+  const URL = `https://clownfish-app-7yexe.ondigitalocean.app/api/v1/${params}`;
   const [parseEditData, setParseEditData] = useState({});
   const [type, setType] = useState("");
   const [category, setCategory] = useState("");

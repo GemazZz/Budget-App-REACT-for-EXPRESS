@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { StyledHeaderDiv, StyledAddNewTransaction, StyledBudgetApp, StyledSignIn, StyledI, StyledEmailP } from "../styles/headerStyle";
 import { useNavigate } from "react-router-dom";
 
-const URL = "http://localhost:3000/api/v1/user";
-const URLDEL = "http://localhost:3000/api/v1/deactivation";
+const URL = "https://clownfish-app-7yexe.ondigitalocean.app/api/v1/user";
+const URLDEL = "https://clownfish-app-7yexe.ondigitalocean.app/api/v1/deactivation";
 
 const Header = () => {
   const navigate = useNavigate();

@@ -41,8 +41,8 @@ function filtering(array, filters) {
   });
 }
 
-const URL = "http://localhost:3000/api/v1/expenses";
-const URLDEL = "http://localhost:3000/api/v1/delexpense";
+const URL = "https://clownfish-app-7yexe.ondigitalocean.app/api/v1/expenses";
+const URLDEL = "https://clownfish-app-7yexe.ondigitalocean.app/api/v1/delexpense";
 
 const Home = () => {
   const [printParseData, setPrintParseData] = useState([]);
