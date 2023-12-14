@@ -25,10 +25,6 @@ const Transaction = () => {
   const [date, setDate] = useState("");
   const [amount, setAmount] = useState("");
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     try {
       const res = await fetch(URL, {
@@ -47,6 +43,9 @@ const Transaction = () => {
       console.error("Error fetching data:", error);
     }
   };
+  useEffect(() => {
+    fetchData();
+  }, []);
   useEffect(() => {
     setType(parseEditData.type);
     setCategory(parseEditData.category);
