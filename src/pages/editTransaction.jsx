@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   StyledDiv,
   StyledCloseBtn,
@@ -17,32 +17,75 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const Transaction = () => {
-  const params = useParams();
-  const parseExistData = JSON.parse(localStorage.getItem("expenses"));
-  const parseSmallExistData = parseExistData.filter((exp) => exp.id !== parseInt(params.id));
-  const parseEditData = parseExistData.filter((exp) => exp.id === parseInt(params.id));
-  const [category, setCategory] = useState(parseEditData[0].category);
-  const [date, setDate] = useState(parseEditData[0].date);
-  const [amount, setAmount] = useState(parseEditData[0].amount);
-  const [type, setType] = useState(parseEditData[0].type);
-  const navigate = useNavigate();
+  const params = useParams().id;
+  const URL = `http://localhost:3000/api/v1/${params}`;
+  const [parseEditData, setParseEditData] = useState({});
+  const [type, setType] = useState("");
+  const [category, setCategory] = useState("");
+  const [date, setDate] = useState("");
+  const [amount, setAmount] = useState("");
 
-  const currentUserId = JSON.parse(localStorage.getItem("id"));
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const res = await fetch(URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: JSON.parse(sessionStorage.getItem("accessToken")),
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Network response was not ok.");
+      }
+      const data = await res.json();
+      setParseEditData(data.foundExpense);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    setType(parseEditData.type);
+    setCategory(parseEditData.category);
+    setDate(parseEditData.date);
+    setAmount(parseEditData.amount);
+  }, [parseEditData]);
+
+  const navigate = useNavigate();
   const expenseData = {
-    userId: currentUserId,
-    id: new Date().getTime(),
     type,
     category,
     date,
     amount: parseInt(amount),
   };
-  const uploadExpenses = () => {
+  const uploadExpenses = async () => {
     if (!category || !date || !amount) {
       alert("Please fill out the form completely");
       return;
     }
-    const fullData = [expenseData, ...parseSmallExistData];
-    localStorage.setItem("expenses", JSON.stringify(fullData));
+    const fetchData = async () => {
+      try {
+        const res = await fetch(URL, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: JSON.parse(sessionStorage.getItem("accessToken")),
+          },
+          body: JSON.stringify(expenseData),
+        });
+        if (!res.ok) {
+          throw new Error("Network response was not ok.");
+        }
+        const data = await res.json();
+        setParseEditData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    await fetchData();
     navigate("/");
   };
   const typeCheckerIncome = () => {
@@ -64,7 +107,14 @@ const Transaction = () => {
       <StyledTransactionH1>Edit transaction</StyledTransactionH1>
       <div>
         <StyledGreenLabel htmlFor="Income">Income </StyledGreenLabel>
-        <input type="radio" value="Income" name="source" id="Income" onClick={() => typeCheckerIncome()} defaultChecked={type === "Income"} />
+        <StyledRadioInput
+          type="radio"
+          value="Income"
+          name="source"
+          id="Income"
+          onClick={() => typeCheckerIncome()}
+          checked={type === "Income"}
+        />
 
         <StyledRedLabel htmlFor="Expense">Expense </StyledRedLabel>
         <StyledRadioInput
@@ -73,14 +123,14 @@ const Transaction = () => {
           name="source"
           id="Expense"
           onClick={() => typeCheckerExpense()}
-          defaultChecked={type === "Expense"}
+          checked={type === "Expense"}
         />
       </div>
       <div>
         <StyledLabel htmlFor="category">Category: </StyledLabel>
         <StyledSelect
           id="category"
-          defaultValue={category}
+          value={category}
           onChange={(e) => {
             setCategory(e.target.value);
           }}

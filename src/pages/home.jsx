@@ -104,7 +104,7 @@ const Home = () => {
   };
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <StyledMainDiv>
         <Filter onFiltersSelect={onFiltersSelect} />
         <PrintData currentExpenses={currentExpenses} dltExpense={dltExpense} />

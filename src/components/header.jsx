@@ -1,16 +1,41 @@
+import { useEffect, useState } from "react";
 import { StyledHeaderDiv, StyledAddNewTransaction, StyledBudgetApp, StyledSignIn, StyledI, StyledEmailP } from "../styles/headerStyle";
 import { useNavigate } from "react-router-dom";
 
+const URL = "http://localhost:3000/api/v1/user";
+
 const Header = () => {
   const navigate = useNavigate();
+  const [userData, setUserData] = useState("");
+  useEffect(() => {
+    fetchData();
+  }, []);
+  console.log(userData);
+  const fetchData = async () => {
+    try {
+      const res = await fetch(URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: JSON.parse(sessionStorage.getItem("accessToken")),
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Network response was not ok.");
+      }
+      const data = await res.json();
+      console.log(data);
+      setUserData(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
   const currentUser = JSON.parse(sessionStorage.getItem("accessToken"));
-  const parseExistData = JSON.parse(localStorage.getItem("users"));
-  const userData = parseExistData.filter((user) => user.userId === currentUser);
   const logOut = () => {
     if (!currentUser) {
       return;
     } else {
-      localStorage.removeItem("id");
+      sessionStorage.removeItem("accessToken");
       navigate("/signin");
     }
   };
@@ -33,7 +58,7 @@ const Header = () => {
   };
   return (
     <StyledHeaderDiv>
-      {currentUser && <StyledEmailP>{userData[0].email}</StyledEmailP>}
+      {currentUser && userData && <StyledEmailP>{userData.foundUser.username}</StyledEmailP>}
       <StyledBudgetApp
         onClick={() => {
           window.location.reload();
