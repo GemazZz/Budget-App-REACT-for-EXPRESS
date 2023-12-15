@@ -73,12 +73,13 @@ const SignUp = () => {
         return res.json();
       })
       .then((json) => {
-        console.log(json);
+        if (json.err) {
+          alert("email is in use");
+          return;
+        }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        alert("email is in use");
-        return;
       });
     navigate("/signin");
   };
