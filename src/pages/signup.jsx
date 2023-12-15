@@ -77,11 +77,11 @@ const SignUp = () => {
           alert("email is in use");
           return;
         }
+        navigate("/signin");
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-    navigate("/signin");
   };
   return (
     <StyledDiv style={{ height: "400px" }}>
