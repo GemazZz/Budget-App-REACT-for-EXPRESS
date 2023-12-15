@@ -74,6 +74,7 @@ const Header = () => {
       }
     };
     await fetchData();
+    sessionStorage.removeItem("accessToken");
     navigate("/signin");
   };
   return (

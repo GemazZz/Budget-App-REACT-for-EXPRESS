@@ -77,6 +77,8 @@ const SignUp = () => {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
+        alert("email is in use");
+        return;
       });
     navigate("/signin");
   };
