@@ -22,7 +22,7 @@ const Transaction = () => {
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("");
   const navigate = useNavigate();
-  const URL = "https://clownfish-app-7yexe.ondigitalocean.app/api/v1/newexpense";
+  const URL = "https://budget-app-j4mt.onrender.com/api/v1/newexpense";
   const expenseData = { date, type, category, amount: parseInt(amount) };
   const uploadExpenses = async () => {
     if (!category || !date || !amount) {

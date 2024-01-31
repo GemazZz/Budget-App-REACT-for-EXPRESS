@@ -41,8 +41,8 @@ function filtering(array, filters) {
   });
 }
 
-const URL = "https://clownfish-app-7yexe.ondigitalocean.app/api/v1/expenses";
-const URLDEL = "https://clownfish-app-7yexe.ondigitalocean.app/api/v1/delexpense";
+const URL = "https://budget-app-j4mt.onrender.com/api/v1/expenses";
+const URLDEL = "https://budget-app-j4mt.onrender.com/api/v1/delexpense";
 
 const Home = () => {
   const [printParseData, setPrintParseData] = useState([]);

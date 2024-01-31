@@ -11,7 +11,7 @@ import {
 } from "../styles/signStyle";
 import { Link, useNavigate } from "react-router-dom";
 
-const URL = "https://clownfish-app-7yexe.ondigitalocean.app/api/v1/newpassword";
+const URL = "https://budget-app-j4mt.onrender.com/api/v1/newpassword";
 
 const ChangePassword = () => {
   const [password, setPassword] = useState("");
